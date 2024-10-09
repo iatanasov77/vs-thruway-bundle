@@ -1,3 +1,9 @@
+1.0.0	|	Release date: **09.10.2024**
+============================================
+* New Features:
+  - Create Bundle
+
+
 0.1.2	|	Release date: **07.10.2024**
 ============================================
 * Bug-Fixes and Improvements:
