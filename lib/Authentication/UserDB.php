@@ -28,10 +28,10 @@ class UserDB implements WampCraUserDbInterface
     public function get($authid)
     {
         try {
-            $userProvider = $this->container->getParameter('voryx_thruway')['user_provider'];
+            $userProvider = $this->container->getParameter( 'vs_thruway' )['user_provider'];
 
             if (null === $userProvider) {
-                throw new \Exception('voryx_thruway.user_provider must be set.');
+                throw new \Exception( 'vs_thruway.user_provider must be set.' );
             }
 
             $user = $this->container->get($userProvider)->loadUserByUsername($authid);

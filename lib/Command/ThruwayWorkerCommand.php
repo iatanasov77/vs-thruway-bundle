@@ -70,7 +70,7 @@ class ThruwayWorkerCommand extends ContainerAwareCommand
      */
     protected function execute( InputInterface $input, OutputInterface $output ): int
     {
-        if ( $this->getParameter('voryx_thruway')['enable_logging'] ) {
+        if ( $this->getParameter( 'vs_thruway' )['enable_logging'] ) {
             \Thruway\Logging\Logger::set( $this->logger );
         } else {
             \Thruway\Logging\Logger::set(new \Psr\Log\NullLogger());
@@ -100,8 +100,8 @@ class ThruwayWorkerCommand extends ContainerAwareCommand
     
     protected function getClient( ?WorkerAnnotation $workerAnnotation = null ): ClientInterface
     {
-        $config = $this->getParameter( 'voryx_thruway' );
-        $loop   = $this->get( 'voryx.thruway.loop' );
+        $config = $this->getParameter( 'vs_thruway' );
+        $loop   = $this->get( 'vs_thruway.thruway.loop' );
         
         if ( $workerAnnotation ) {
             $realm = $workerAnnotation->getRealm() ?: $config['realm'];

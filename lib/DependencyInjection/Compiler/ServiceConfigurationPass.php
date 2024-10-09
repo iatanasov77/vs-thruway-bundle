@@ -30,7 +30,7 @@ class ServiceConfigurationPass implements CompilerPassInterface
             $className      = $def->getClass();
             $class          = new \ReflectionClass( $className );
             $methods        = $class->getMethods();
-            $resourceMapper = $container->getDefinition( 'voryx.thruway.resource.mapper' );
+            $resourceMapper = $container->getDefinition( 'vs_thruway.thruway.resource.mapper' );
 
             $resourceMapper->addMethodCall( 'setWorkerAnnotation', [$class->getName()] );
 
@@ -39,7 +39,7 @@ class ServiceConfigurationPass implements CompilerPassInterface
             }
         }
 
-        $router = $container->getDefinition( 'voryx.thruway.server' );
+        $router = $container->getDefinition( 'vs_thruway.thruway.server' );
         foreach ( $container->findTaggedServiceIds( 'thruway.router_module' ) as $id => $attr ) {
             $router->addMethodCall( 'registerModule', [new Reference( $id )] );
         }

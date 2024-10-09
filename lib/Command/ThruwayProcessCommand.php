@@ -82,7 +82,7 @@ class ThruwayProcessCommand extends ContainerAwareCommand
      */
     protected function execute( InputInterface $input, OutputInterface $output ): int
     {
-        if ( $this->getParameter( 'voryx_thruway' )['enable_logging'] ) {
+        if ( $this->getParameter( 'vs_thruway' )['enable_logging'] ) {
             \Thruway\Logging\Logger::set( $this->logger );
         } else {
             \Thruway\Logging\Logger::set( new \Psr\Log\NullLogger() );
@@ -90,7 +90,7 @@ class ThruwayProcessCommand extends ContainerAwareCommand
 
         $this->input  = $input;
         $this->output = $output;
-        $this->config = $this->getParameter( 'voryx_thruway' );
+        $this->config = $this->getParameter( 'vs_thruway' );
 
         switch ( $input->getArgument( 'action' ) ) {
             case 'start':
@@ -140,7 +140,7 @@ class ThruwayProcessCommand extends ContainerAwareCommand
     {
         try {
             $env  = $this->get( 'kernel' )->getEnvironment();
-            $loop = $this->get( 'voryx.thruway.loop' );
+            $loop = $this->get( 'vs_thruway.thruway.loop' );
 
             $this->processManager = new ProcessManager( "process_manager", $loop, $this );
             $this->processManager->addTransportProvider( new PawlTransportProvider( $this->config['trusted_url'] ) );
@@ -341,7 +341,7 @@ class ThruwayProcessCommand extends ContainerAwareCommand
         if ( ! $this->input->getOption( 'no-exec' ) ) {
             $phpBinary = 'exec ' . $phpBinary;
         }
-        $resourceMapper = $this->get( 'voryx.thruway.resource.mapper' );
+        $resourceMapper = $this->get( 'vs_thruway.thruway.resource.mapper' );
         $mappings       = $resourceMapper->getAllMappings();
 
         foreach ( $mappings as $workerName => $mapping ) {

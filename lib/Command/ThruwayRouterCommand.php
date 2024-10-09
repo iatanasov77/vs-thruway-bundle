@@ -41,7 +41,7 @@ class ThruwayRouterCommand extends ContainerAwareCommand
      */
     protected function execute( InputInterface $input, OutputInterface $output ): int
     {
-        if ( $this->getParameter('voryx_thruway')['enable_logging'] ) {
+        if ( $this->getParameter( 'vs_thruway' )['enable_logging'] ) {
             \Thruway\Logging\Logger::set( $this->logger );
         } else {
             \Thruway\Logging\Logger::set( new \Psr\Log\NullLogger() );
@@ -54,7 +54,7 @@ class ThruwayRouterCommand extends ContainerAwareCommand
             $config = $this->getParameter( 'voryx_thruway' );
 
             //Get the Router Service
-            $server = $this->get( 'voryx.thruway.server' );
+            $server = $this->get( 'vs_thruway.thruway.server' );
 
             //Trusted provider (bound to loopback and requires no authentication)
             $trustedProvider = new RatchetTransportProvider( $config['router']['ip'], $config['router']['trusted_port'] );

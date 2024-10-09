@@ -16,7 +16,7 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder( 'voryx_thruway' );
+        $treeBuilder = new TreeBuilder( 'vs_thruway' );
         $rootNode    = $treeBuilder->getRootNode();
 
         $rootNode

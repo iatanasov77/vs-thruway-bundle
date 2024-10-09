@@ -31,7 +31,7 @@ class AnnotationConfigurationPass implements CompilerPassInterface
      */
     public function process( ContainerBuilder $container ): void
     {
-        $config      = $container->getParameter( 'voryx_thruway' );
+        $config      = $container->getParameter( 'vs_thruway' );
         $bundleFiles = $this->getBundleFiles( $container );
         $files       = $config['locations']['files'] + $bundleFiles;
 
@@ -61,7 +61,7 @@ class AnnotationConfigurationPass implements CompilerPassInterface
      */
     private function getBundleFiles( ContainerBuilder $container ): array
     {
-        $config      = $container->getParameter( 'voryx_thruway' );
+        $config      = $container->getParameter( 'vs_thruway' );
         $scanBundles = $config['locations']['bundles'];
         $bundles     = $this->bundles;
         $files       = [];
