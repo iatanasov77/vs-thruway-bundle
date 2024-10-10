@@ -48,7 +48,7 @@ class ProcessManager extends Client
 
 
         //Congestion Manager Client.  This needs to be a separate client because it needs to listen on the main realm and not `process_manager`.
-        $config            = $this->container->getParameter('voryx_thruway');
+        $config            = $this->container->getParameter( 'vs_thruway' );
         $congestionManager = new Client($config['realm'], $session->getLoop());
         $congestionManager->addTransportProvider(new PawlTransportProvider($config['trusted_url']));
 
@@ -188,7 +188,7 @@ class ProcessManager extends Client
     public function onCongestion($args)
     {
         //Get the name of the worker that handles this RPC
-        $worker = $this->container->get('voryx.thruway.resource.mapper')->findWorker($args[0]->name);
+        $worker = $this->container->get( 'vs_thruway.thruway.resource.mapper' )->findWorker($args[0]->name);
 
         if (!isset($this->commands[$worker])) {
             return;

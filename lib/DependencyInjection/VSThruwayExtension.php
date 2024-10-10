@@ -14,7 +14,7 @@ use Thruway\Logging\Logger;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class VoryxThruwayExtension extends Extension
+class VSThruwayExtension extends Extension
 {
     /**
      * {@inheritDoc}
@@ -30,7 +30,7 @@ class VoryxThruwayExtension extends Extension
 
         $this->validate( $config );
 
-        $container->setParameter( 'voryx_thruway', $config );
+        $container->setParameter( 'vs_thruway', $config );
 
         $this->configureOptions( $config, $container );
 
@@ -66,7 +66,7 @@ class VoryxThruwayExtension extends Extension
 
         if ( ! isset( $config['realm'] ) ) {
             throw new \InvalidArgumentException(
-              'The "realm" option must be set within voryx_thruway'
+              'The "realm" option must be set within vs_thruway'
             );
         }
     }
@@ -86,21 +86,21 @@ class VoryxThruwayExtension extends Extension
         if ( isset($config['router']['authentication']) && $config['router']['authentication'] !== false ) {
             //Inject the authentication manager into the router
             $container
-              ->getDefinition( 'voryx.thruway.server' )
-              ->addMethodCall( 'registerModule', [new Reference( 'voryx.thruway.authentication.manager' )] );
+              ->getDefinition( 'vs_thruway.thruway.server' )
+              ->addMethodCall( 'registerModule', [new Reference( 'vs_thruway.thruway.authentication.manager' )] );
         }
 
         if ( isset( $config['router']['authorization'] ) && $config['router']['authorization'] !== false ) {
             $authId = $config['router']['authorization'];
-            $container->getDefinition( 'voryx.thruway.server' )
+            $container->getDefinition( 'vs_thruway.thruway.server' )
                 ->addMethodCall( 'registerModule', [new Reference( $authId )] );
         }
 
         //Topic State Handler
         if ( isset( $config['router']['enable_topic_state'] ) && $config['router']['enable_topic_state'] === true ) {
             $container
-              ->getDefinition( 'voryx.thruway.server' )
-              ->addMethodCall( 'registerModule', [new Reference( 'voryx.thruway.topic.state.handler' )] );
+              ->getDefinition( 'vs_thruway.thruway.server' )
+              ->addMethodCall( 'registerModule', [new Reference( 'vs_thruway.thruway.topic.state.handler' )] );
         }
     }
 

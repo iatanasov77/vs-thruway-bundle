@@ -6,56 +6,51 @@
 
     <services>
 
-        <service id="voryx.thruway.loop" class="React\EventLoop\LoopInterface" public="true">
+        <service id="vs_thruway.thruway.loop" class="React\EventLoop\LoopInterface" public="true">
             <factory class="React\EventLoop\Factory" method="create" />
         </service>
 
-        <service id="voryx.thruway.ratchet.transport"
-                 class="Thruway\Transport\RatchetTransportProvider"
-                 public="false">
-            <argument type="expression">parameter('voryx_thruway')['router']['ip']</argument>
-            <argument type="expression">parameter('voryx_thruway')['router']['port']</argument>
+        <service id="vs_thruway.thruway.ratchet.transport" class="Thruway\Transport\RatchetTransportProvider" public="false">
+            <argument type="expression">parameter( 'vs_thruway' )['router']['ip']</argument>
+            <argument type="expression">parameter( 'vs_thruway' )['router']['port']</argument>
         </service>
 
-        <service id="voryx.thruway.client"
-                 class="Thruway\Peer\Client">
-            <argument type="expression">parameter('voryx_thruway')['realm']</argument>
+        <service id="vs_thruway.thruway.client" class="Thruway\Peer\Client">
+            <argument type="expression">parameter('vs_thruway')['realm']</argument>
         </service>
 
-        <service id="voryx.thruway.web.push.client"
-                 class="Vankosoft\ThruwayBundle\Client\WebPushClient"
-                 public="false">
-            <argument type="expression">parameter('voryx_thruway')['realm']</argument>
+        <service id="vs_thruway.thruway.web.push.client" class="Vankosoft\ThruwayBundle\Client\WebPushClient" public="false">
+            <argument type="expression">parameter('vs_thruway')['realm']</argument>
         </service>
 
-        <service id="voryx.thruway.internal.transport"
+        <service id="vs_thruway.thruway.internal.transport"
                  class="Thruway\Transport\InternalClientTransportProvider"
                  public="false">
-            <argument type="service" id="voryx.thruway.client"/>
+            <argument type="service" id="vs_thruway.thruway.client"/>
         </service>
 
-        <service id="voryx.thruway.internal.manager"
+        <service id="vs_thruway.thruway.internal.manager"
                  class="Thruway\Transport\InternalClientTransportProvider"
                  public="false">
         </service>
 
-        <service id="voryx.thruway.internal.web.push"
+        <service id="vs_thruway.thruway.internal.web.push"
                  class="Thruway\Transport\InternalClientTransportProvider"
                  public="false">
-            <argument type="service" id="voryx.thruway.web.push.client"/>
+            <argument type="service" id="vs_thruway.thruway.web.push.client"/>
         </service>
 
-        <service id="voryx.thruway.server" class="Thruway\Peer\Router" public="true">
-            <argument type="service" id="voryx.thruway.loop"/>
+        <service id="vs_thruway.thruway.server" class="Thruway\Peer\Router" public="true">
+            <argument type="service" id="vs_thruway.thruway.loop"/>
             <call method="addTransportProvider">
-                <argument type="service" id="voryx.thruway.ratchet.transport"/>
+                <argument type="service" id="vs_thruway.thruway.ratchet.transport"/>
             </call>
             <!--<call method="addTransportProvider">-->
-            <!--<argument type="service" id="voryx.thruway.internal.transport"/>-->
+            <!--<argument type="service" id="vs_thruway.thruway.internal.transport"/>-->
             <!--</call>-->
         </service>
 
-        <service id="voryx.thruway.resource.mapper"
+        <service id="vs_thruway.thruway.resource.mapper"
                  class="Vankosoft\ThruwayBundle\ResourceMapper" public="true">
             <argument type="service" id="annotation_reader"/>
         </service>
@@ -67,7 +62,7 @@
         <service id="wamp_kernel" class="Vankosoft\ThruwayBundle\WampKernel" public="true">
             <argument type="service" id="service_container"/>
             <argument type="service" id="serializer"/>
-            <argument type="service" id="voryx.thruway.resource.mapper"/>
+            <argument type="service" id="vs_thruway.thruway.resource.mapper"/>
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="logger"/>
         </service>
@@ -76,63 +71,63 @@
             <factory class="Vankosoft\ThruwayBundle\ContainerFactory" method="createContainer"/>
             <argument type="expression">parameter('kernel.container_class')</argument>
             <argument type="service" id="thruway.client"/>
-            <argument type="service" id="voryx.thruway.loop"/>
+            <argument type="service" id="vs_thruway.thruway.loop"/>
             <argument type="service" id="service_container"/>
         </service>
 
         <service id="thruway.details" class="Vankosoft\ThruwayBundle\Details"/>
 
         <!--Authentication-->
-        <service id="voryx.thruway.authentication.manager"
+        <service id="vs_thruway.thruway.authentication.manager"
                  class="Thruway\Authentication\AuthenticationManager"
                  public="false">
-            <argument type="service" id="voryx.thruway.client"/>
+            <argument type="service" id="vs_thruway.thruway.client"/>
         </service>
 
-        <service id="voryx.thruway.auth.manager.transport.provider"
+        <service id="vs_thruway.thruway.auth.manager.transport.provider"
                  class="Thruway\Transport\InternalClientTransportProvider"
                  public="false">
-            <argument type="service" id="voryx.thruway.authentication.manager"/>
+            <argument type="service" id="vs_thruway.thruway.authentication.manager"/>
         </service>
 
-        <service id="voryx.thruway.user.db"
+        <service id="vs_thruway.thruway.user.db"
                  class="Vankosoft\ThruwayBundle\Authentication\UserDB"
                  public="false">
             <argument type="service" id="service_container"/>
         </service>
 
-        <service id="voryx.thruway.wamp.cra.auth.client"
+        <service id="vs_thruway.thruway.wamp.cra.auth.client"
                  class="Thruway\Authentication\WampCraAuthProvider">
-            <argument type="expression">[parameter('voryx_thruway')['realm']]</argument>
+            <argument type="expression">[parameter( 'vs_thruway' )['realm']]</argument>
             <call method="setUserDb">
-                <argument type="service" id="voryx.thruway.user.db"/>
+                <argument type="service" id="vs_thruway.thruway.user.db"/>
             </call>
         </service>
 
-        <service id="voryx.thruway.wamp.cra.auth.transport.provider"
+        <service id="vs_thruway.thruway.wamp.cra.auth.transport.provider"
                  class="Thruway\Transport\InternalClientTransportProvider">
-            <argument type="service" id="voryx.thruway.wamp.cra.auth.client"/>
+            <argument type="service" id="vs_thruway.thruway.wamp.cra.auth.client"/>
         </service>
 
         <!--Main Thruway Client-->
         <service id="thruway.client"
                  class="Vankosoft\ThruwayBundle\Client\ClientManager" public="true">
             <argument type="service" id="service_container"/>
-            <argument>%voryx_thruway%</argument>
+            <argument>%vs_thruway%</argument>
             <argument type="service" id="serializer"/>
-            <argument type="service" id="voryx.thruway.client.react_connector"/>
+            <argument type="service" id="vs_thruway.thruway.client.react_connector"/>
         </service>
 
-        <service id="voryx.thruway.topic_state_handler" class="Vankosoft\ThruwayBundle\TopicStateHandler">
+        <service id="vs_thruway.thruway.topic_state_handler" class="Vankosoft\ThruwayBundle\TopicStateHandler">
             <tag name="kernel.event_listener" event="wamp.open" method="onOpen"/>
         </service>
 
         <!-- Topic State Handler -->
-        <service id="voryx.thruway.topic.state.handler"
+        <service id="vs_thruway.thruway.topic.state.handler"
                  class="Thruway\Subscription\StateHandlerRegistry"
                  public="false">
-            <argument type="expression">parameter('voryx_thruway')['realm']</argument>
-            <argument type="service" id="voryx.thruway.loop"/>
+            <argument type="expression">parameter( 'vs_thruway' )['realm']</argument>
+            <argument type="service" id="vs_thruway.thruway.loop"/>
         </service>
 
         <!-- Register command as public services -->
@@ -168,15 +163,15 @@
             <argument type="service" id="doctrine" />
             <argument type="service" id="validator" />
             <argument type="service" id="wamp_kernel" />
-            <argument type="service" id="voryx.thruway.client.react_connector" />
+            <argument type="service" id="vs_thruway.thruway.client.react_connector" />
             <call method="setLogger">
                 <argument type="service" id="logger" />
             </call>
             <tag name="console.command" command="thruway:worker:start" />
         </service>
 
-        <service id="voryx.thruway.client.react_connector" class="React\Socket\Connector">
-            <argument type="service" id="voryx.thruway.loop"/>
+        <service id="vs_thruway.thruway.client.react_connector" class="React\Socket\Connector">
+            <argument type="service" id="vs_thruway.thruway.loop"/>
         </service>
     </services>
 </container>
