@@ -121,13 +121,13 @@ class ThruwayProcessCommand extends ContainerAwareCommand
      */
     protected function start(): void
     {
-        $appCmd = "{$this->get('kernel')->getRootDir()}/console";
-        $binCmd = "{$this->get('kernel')->getRootDir()}/../bin/console";
+        $appCmd = "{$this->get( 'kernel' )->getRootDir()}/console";
+        $binCmd = "{$this->get( 'kernel' )->getRootDir()}/../bin/console";
 
         $this->consoleCommand = file_exists( $binCmd ) ? $binCmd : $appCmd;
 
-        if ($this->input->getArgument('worker')) {
-            $this->startWorker($this->input->getArgument('worker'));
+        if ( $this->input->getArgument( 'worker' ) ) {
+            $this->startWorker( $this->input->getArgument( 'worker' ) );
         } else {
             $this->startManager();
         }

@@ -51,7 +51,7 @@ class ThruwayRouterCommand extends ContainerAwareCommand
             $output->writeln( 'Making a go at starting the Thruway Router' );
 
             //Configure stuff
-            $config = $this->getParameter( 'voryx_thruway' );
+            $config = $this->getParameter( 'vs_thruway' );
 
             //Get the Router Service
             $server = $this->get( 'vs_thruway.thruway.server' );

@@ -182,7 +182,7 @@ class WampKernel implements WampKernelInterface
             $newContainer = ContainerFactory::createContainer(
                 $this->container->getParameter( 'kernel.container_class' ),
                 $this->container->get( 'thruway.client' ),
-                $this->container->get( 'voryx.thruway.loop' ),
+                $this->container->get( 'vs_thruway.thruway.loop' ),
                 $this->container
             );
 
@@ -460,7 +460,7 @@ class WampKernel implements WampKernelInterface
         $user = null;
 
         //Use the global container so every call uses the same instance of the user provider
-        $config = $this->container->getParameter( 'voryx_thruway' );
+        $config = $this->container->getParameter( 'vs_thruway' );
 
         if ( $container->has( $config['user_provider'] ) ) {
             $user = $container->get( $config['user_provider'] )->loadUserByUsername( $authid );
@@ -523,7 +523,7 @@ class WampKernel implements WampKernelInterface
         if ( $this->container->has( 'doctrine' ) ) {
             if ( ! $this->container->get( 'doctrine' )->getManager()->isOpen() ) {
                 $this->container->get( 'doctrine' )->resetManager();
-                $config = $this->container->getParameter( 'voryx_thruway' );
+                $config = $this->container->getParameter( 'vs_thruway' );
 
                 if ( $this->container->has( $config['user_provider'] ) ) {
                     $this->container->set( $config['user_provider'], null );

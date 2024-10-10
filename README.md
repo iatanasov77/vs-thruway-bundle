@@ -10,7 +10,7 @@ Note:  This project is still undergoing a lot of changes, so the API will change
 
 Install the Thruway Bundle
 
-      $ composer require "voryx/thruway-bundle"
+      $ composer require "vankosoft/thruway-bundle"
       
 
 Update AppKernel.php (when using Symfony < 4)
@@ -18,7 +18,7 @@ Update AppKernel.php (when using Symfony < 4)
 ```php
 $bundles = array(
     // ...
-    new Voryx\ThruwayBundle\VoryxThruwayBundle(),
+    Vankosoft\ThruwayBundle\VSThruwayBundle::class => ['all' => true],
     // ...
 );
 ```
@@ -28,7 +28,7 @@ $bundles = array(
 ```yml
 #app/config/config.yml
 
-voryx_thruway:
+vs_thruway:
     realm: 'realm1'
     url: 'ws://127.0.0.1:8081' #The url that the clients will use to connect to the router
     router:
@@ -43,19 +43,6 @@ voryx_thruway:
 #
 # For symfony 4, this bundle will automatically scan for annotated worker files in the src/Controller folder
       
-```
-
-With Symfony 4 use a filename like: ```config/packages/voryx.yaml```
-
-If you are using the in-memory user provider, you'll need to add a ```thruway``` to the security firewall and set the ``in_memory_user_provider``.
-
-```yml
-#app/config/security.yml
-
-security: 
-   firewalls:
-        thruway:
-            security: false	     
 ```
 
 You can also tag services with `thruway.resource` and any annotation will get picked up
@@ -74,34 +61,6 @@ services:
     App\Worker\:
         resource: '../src/Worker'
         tags: ['thruway.resource']
-```
-
-### Authentication with FOSUserBundle via WampCRA
-
-Change the Password Encoder (tricky on existing sites) to master wamp challenge
-
-```yml
-#app/config/security.yml
-
-security:
-    ...
-    encoders:
-        FOS\UserBundle\Model\UserInterface:
-            algorithm:            pbkdf2
-            hash_algorithm:       sha256
-            encode_as_base64:     true
-            iterations:           1000
-            key_length:           32
-```
-
-set voryx_thruway.user_provider to "fos_user.user_provider"
-
-```yml
-#app/config/config.yml
-
-voryx_thruway:
-    user_provider: 'fos_user.user_provider.username' #fos_user.user_provider.username_email login with email
-
 ```
 
 The WAMP-CRA service is already configured, we just need to add a tag to it to have the bundle install it:

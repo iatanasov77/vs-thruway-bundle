@@ -14,7 +14,7 @@ use Thruway\Logging\Logger;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class VoryxThruwayExtension extends Extension
+class VSThruwayExtension extends Extension
 {
     /**
      * {@inheritDoc}

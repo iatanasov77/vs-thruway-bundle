@@ -1,5 +1,6 @@
 <?php namespace Vankosoft\ThruwayBundle;
 
+use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Vankosoft\ThruwayBundle\DependencyInjection\Compiler\AnnotationConfigurationPass;
@@ -7,7 +8,7 @@ use Vankosoft\ThruwayBundle\DependencyInjection\Compiler\GlobalTaggedServicesPas
 use Vankosoft\ThruwayBundle\DependencyInjection\Compiler\ServiceConfigurationPass;
 
 /**
- * Class VoryxThruwayBundle
+ * Class VSThruwayBundle
  * @package Vankosoft\ThruwayBundle
  */
 class VSThruwayBundle extends Bundle
@@ -28,5 +29,13 @@ class VSThruwayBundle extends Bundle
                 'enabled' => true,
             ],
         ]);
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getContainerExtension(): ?ExtensionInterface
+    {
+        return new \Vankosoft\ThruwayBundle\DependencyInjection\VSThruwayExtension();
     }
 }

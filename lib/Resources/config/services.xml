@@ -16,17 +16,17 @@
         </service>
 
         <service id="vs_thruway.thruway.client" class="Thruway\Peer\Client">
-            <argument type="expression">parameter('voryx_thruway')['realm']</argument>
+            <argument type="expression">parameter('vs_thruway')['realm']</argument>
         </service>
 
         <service id="vs_thruway.thruway.web.push.client" class="Vankosoft\ThruwayBundle\Client\WebPushClient" public="false">
-            <argument type="expression">parameter('voryx_thruway')['realm']</argument>
+            <argument type="expression">parameter('vs_thruway')['realm']</argument>
         </service>
 
         <service id="vs_thruway.thruway.internal.transport"
                  class="Thruway\Transport\InternalClientTransportProvider"
                  public="false">
-            <argument type="service" id="voryx.thruway.client"/>
+            <argument type="service" id="vs_thruway.thruway.client"/>
         </service>
 
         <service id="vs_thruway.thruway.internal.manager"
@@ -113,7 +113,7 @@
         <service id="thruway.client"
                  class="Vankosoft\ThruwayBundle\Client\ClientManager" public="true">
             <argument type="service" id="service_container"/>
-            <argument>%voryx_thruway%</argument>
+            <argument>%vs_thruway%</argument>
             <argument type="service" id="serializer"/>
             <argument type="service" id="vs_thruway.thruway.client.react_connector"/>
         </service>

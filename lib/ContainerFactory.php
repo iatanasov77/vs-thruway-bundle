@@ -1,6 +1,4 @@
-<?php
-
-namespace Vankosoft\ThruwayBundle;
+<?php namespace Vankosoft\ThruwayBundle;
 
 use React\EventLoop\LoopInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -9,23 +7,23 @@ use Vankosoft\ThruwayBundle\Client\ClientManager;
 class ContainerFactory
 {
 
-    public static function createContainer($containerName, ClientManager $thruwayClient, LoopInterface $loop, ContainerInterface $parentContainer)
+    public static function createContainer( $containerName, ClientManager $thruwayClient, LoopInterface $loop, ContainerInterface $parentContainer )
     {
 
         /** @var ContainerInterface $childContainer */
         $childContainer = new $containerName([
-            'container.build_id'   => $parentContainer->getParameter('container.build_id'),
-            'container.build_hash' => $parentContainer->getParameter('container.build_hash'),
-            'container.build_time' => $parentContainer->getParameter('container.build_time'),
+            'container.build_id'   => $parentContainer->getParameter( 'container.build_id' ),
+            'container.build_hash' => $parentContainer->getParameter( 'container.build_hash' ),
+            'container.build_time' => $parentContainer->getParameter( 'container.build_time' ),
         ]);
 
         //These services will be passed from the outer container into the inner container
-        $childContainer->set('thruway.client', $thruwayClient);
-        $childContainer->set('voryx.thruway.loop', $loop);
+        $childContainer->set( 'thruway.client', $thruwayClient );
+        $childContainer->set( 'vs_thruway.thruway.loop', $loop );
 
         //Any service that is tagged 'thruway.global' will be copied to the child container
-        foreach ($parentContainer->get('tagged_service_holder') as $taggedService) {
-            $childContainer->set($taggedService[0], $taggedService[1]);
+        foreach ( $parentContainer->get( 'tagged_service_holder' ) as $taggedService ) {
+            $childContainer->set( $taggedService[0], $taggedService[1] );
         }
 
         return $childContainer;

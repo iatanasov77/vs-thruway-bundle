@@ -1,6 +1,4 @@
-<?php
-
-namespace Vankosoft\ThruwayBundle;
+<?php namespace Vankosoft\ThruwayBundle;
 
 use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -13,9 +11,9 @@ use Vankosoft\ThruwayBundle\Mapping\URIClassMapping;
  */
 class ResourceMapper
 {
-    const REGISTER_ANNOTATION_CLASS = 'Voryx\\ThruwayBundle\\Annotation\\Register';
-    const SUBSCRIBE_ANNOTATION_CLASS = 'Voryx\\ThruwayBundle\\Annotation\\Subscribe';
-    const WORKER_ANNOTATION_CLASS = 'Voryx\\ThruwayBundle\\Annotation\\Worker';
+    const REGISTER_ANNOTATION_CLASS = 'Vankosoft\\ThruwayBundle\\Annotation\\Register';
+    const SUBSCRIBE_ANNOTATION_CLASS = 'Vankosoft\\ThruwayBundle\\Annotation\\Subscribe';
+    const WORKER_ANNOTATION_CLASS = 'Vankosoft\\ThruwayBundle\\Annotation\\Worker';
     const SECURITY_ANNOTATION_CLASS = 'Sensio\\Bundle\\FrameworkExtraBundle\\Configuration\\Security';
 
     /**
