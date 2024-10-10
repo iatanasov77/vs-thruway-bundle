@@ -1,3 +1,9 @@
+1.0.1	|	Release date: **10.10.2024**
+============================================
+* New Features:
+  - Change Vorex Namespace to Vankosoft.
+
+
 1.0.0	|	Release date: **09.10.2024**
 ============================================
 * New Features:
