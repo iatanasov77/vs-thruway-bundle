@@ -1,7 +1,7 @@
 {
     "name": "vankosoft/thruway-bundle",
     "type": "symfony-bundle",
-    "description": "WebSockets (WAMP2) integration for Symfony",
+    "description": "VankoSoft Symfony Application Extension - WebSockets (WAMP2) integration",
     "keywords": [
         "WebSockets",
         "WAMP",
