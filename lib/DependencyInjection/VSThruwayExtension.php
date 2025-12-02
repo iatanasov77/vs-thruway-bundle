@@ -24,13 +24,15 @@ class VSThruwayExtension extends Extension
         $configuration = new Configuration();
         $config        = $this->processConfiguration( $configuration, $configs );
 
-        $loader = new Loader\XmlFileLoader( $container, new FileLocator( __DIR__.'/../Resources/config' ) );
-        
-        $loader->load( 'services.xml' );
+        $loader = new Loader\YamlFileLoader( $container, new FileLocator( __DIR__.'/../Resources/config' ) );
+        $loader->load( 'services.yaml' );
 
         $this->validate( $config );
 
-        $container->setParameter( 'vs_thruway', $config );
+        $container->setParameter( 'vs_thruway.realm', $config['realm'] );
+        $container->setParameter( 'vs_thruway.trusted_url', $config['trusted_url'] );
+        $container->setParameter( 'vs_thruway.router_ip', $config['router']['ip'] );
+        $container->setParameter( 'vs_thruway.router_port', $config['router']['port'] );
 
         $this->configureOptions( $config, $container );
 

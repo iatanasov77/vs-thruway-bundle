@@ -1,0 +1,95 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: true
+    
+    vs_thruway.thruway.loop:
+        class: React\EventLoop\LoopInterface
+        factory: ['React\EventLoop\Factory', 'create']
+    
+    vs_thruway.thruway.ratchet.transport:
+        class: Thruway\Transport\RatchetTransportProvider
+        public: false
+        arguments:
+            - '%vs_thruway.router_ip%'
+            - '%vs_thruway.router_port%'
+    
+    vs_thruway.thruway.client:
+        class: Thruway\Peer\Client
+        arguments:
+            - '%vs_thruway.realm%'
+    
+    vs_thruway.thruway.web.push.client:
+        class: Vankosoft\ThruwayBundle\Client\WebPushClient
+        public: false
+        arguments:
+            - '%vs_thruway.realm%'
+    
+    vs_thruway.thruway.internal.transport:
+        class: Thruway\Transport\InternalClientTransportProvider
+        public: false
+        arguments:
+            - '@vs_thruway.thruway.client'
+    
+    vs_thruway.thruway.internal.manager:
+        class: Thruway\Transport\InternalClientTransportProvider
+        public: false
+    
+    vs_thruway.thruway.internal.web.push:
+        class: Thruway\Transport\InternalClientTransportProvider
+        public: false
+        arguments:
+            - '@vs_thruway.thruway.web.push.client'
+    
+    vs_thruway.thruway.server:
+        class: Thruway\Peer\Router
+        arguments:
+            - '@vs_thruway.thruway.loop'
+        calls:
+            - [ addTransportProvider, [ '@vs_thruway.thruway.ratchet.transport' ] ]
+    
+    vs_thruway.thruway.resource.mapper:
+        class: Vankosoft\ThruwayBundle\ResourceMapper
+        arguments:
+            - '@annotation_reader'
+    
+    get_set_stdClass_normalizer:
+        class: Vankosoft\ThruwayBundle\Serialization\StdClassNormalizer
+        public: false
+        tags:
+            - { name: 'serializer.normalizer' }
+    
+    wamp_kernel:
+        class: Vankosoft\ThruwayBundle\WampKernel
+        arguments:
+            - '@service_container'
+            - '@serializer'
+            - '@vs_thruway.thruway.resource.mapper'
+            - '@event_dispatcher'
+            - '@logger'
+    
+    thruway_container:
+        class: Symfony\Component\DependencyInjection\Container
+        arguments:
+            - '%kernel.container_class%'
+            - '@thruway.client'
+            - '@vs_thruway.thruway.loop'
+            - '@service_container'
+    
+    vs_thruway.thruway.topic_state_handler:
+        class: Vankosoft\ThruwayBundle\TopicStateHandler
+        tags:
+            - { name: 'kernel.event_listener', event: 'wamp.open', method: 'onOpen' }
+    
+    vs_thruway.thruway.topic.state.handler:
+        class: Thruway\Subscription\StateHandlerRegistry
+        public: false
+        arguments:
+            - '%vs_thruway.realm%'
+            - '@vs_thruway.thruway.loop'
+    
+    vs_thruway.thruway.client.react_connector:
+        class: React\Socket\Connector
+        arguments:
+            - '@vs_thruway.thruway.loop'

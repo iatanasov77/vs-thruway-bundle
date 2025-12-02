@@ -21,27 +21,35 @@ class ClientManager
 {
     /* @var Container */
     private $container;
-
-    /** @var */
-    private $config;
-
-
+    
     /** @var Serializer */
     private $serializer;
     
     /** @var ConnectorInterface */
     private $connector;
+    
+    /** @var string */
+    private $realm;
+    
+    /** @var string */
+    private $trustedUrl;
 
     /**
      * @param Container $container
      * @param $config
      */
-    public function __construct(Container $container, $config, Serializer $serializer, ConnectorInterface $connector)
-    {
-        $this->container  = $container;
-        $this->config     = $config;
-        $this->serializer = $serializer;
-        $this->connector  = $connector;
+    public function __construct(
+        Container $container,
+        Serializer $serializer,
+        ConnectorInterface $connector,
+        string $realm,
+        string $trustedUrl
+    ) {
+        $this->container    = $container;
+        $this->serializer   = $serializer;
+        $this->connector    = $connector;
+        $this->realm        = $realm;
+        $this->trustedUrl   = $trustedUrl;
     }
 
     /**
@@ -150,9 +158,9 @@ class ClientManager
      */
     private function getShortClient()
     {
-        $client = new Client($this->config['realm']);
-        $client->setAttemptRetry(false);
-        $client->addTransportProvider(new PawlTransportProvider($this->config['trusted_url'], $this->connector));
+        $client = new Client( $this->realm );
+        $client->setAttemptRetry( false );
+        $client->addTransportProvider( new PawlTransportProvider( $this->trustedUrl, $this->connector ) );
 
         return $client;
     }

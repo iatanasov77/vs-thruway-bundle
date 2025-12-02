@@ -1,0 +1,36 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: true
+    
+    vs_thruway.thruway.authentication.manager:
+        class: Thruway\Authentication\AuthenticationManager
+        public: false
+        arguments:
+            - '@vs_thruway.thruway.client'
+    
+    vs_thruway.thruway.auth.manager.transport.provider:
+        class: Thruway\Transport\InternalClientTransportProvider
+        public: false
+        arguments:
+            - '@vs_thruway.thruway.authentication.manager'
+    
+    vs_thruway.thruway.wamp.cra.auth.client:
+        class: Thruway\Authentication\WampCraAuthProvider
+        public: false
+        arguments:
+            - '%vs_thruway.realm%'
+        calls:
+            - [ setUserDb, [ '@vs_thruway.thruway.user.db' ] ]
+    
+    vs_thruway.thruway.wamp.cra.auth.transport.provider:
+        class: Thruway\Transport\InternalClientTransportProvider
+        arguments:
+            - '@vs_thruway.thruway.wamp.cra.auth.client'
+    
+    vs_thruway.thruway.user.db:
+        class: Vankosoft\ThruwayBundle\Authentication\UserDB
+        public: false
+        arguments:
+            - '@service_container'

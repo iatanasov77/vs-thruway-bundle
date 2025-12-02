@@ -1,0 +1,15 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: true
+    
+    thruway.client:
+        class: Vankosoft\ThruwayBundle\Client\ClientManager
+        arguments:
+            - '@service_container'
+            - '@vs_thruway.thruway.client'
+            - '@serializer'
+            - '@vs_thruway.thruway.client.react_connector'
+            - '%vs_thruway.realm%'
+            - '%vs_thruway.trusted_url%'

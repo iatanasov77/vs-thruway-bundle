@@ -1,0 +1,49 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: true
+    
+    thruway.command.debug:
+        class: Vankosoft\ThruwayBundle\Command\ThruwayDebugCommand
+        arguments:
+            - '@service_container'
+            - '@doctrine'
+            - '@validator'
+        tags:
+            - { name: 'console.command', command: 'thruway:debug' }
+    
+    thruway.command.process:
+        class: Vankosoft\ThruwayBundle\Command\ThruwayProcessCommand
+        arguments:
+            - '@service_container'
+            - '@doctrine'
+            - '@validator'
+        calls:
+            - [ setLogger, [ '@logger' ] ]
+        tags:
+            - { name: 'console.command', command: 'thruway:process' }
+    
+    thruway.command.router:
+        class: Vankosoft\ThruwayBundle\Command\ThruwayRouterCommand
+        arguments:
+            - '@service_container'
+            - '@doctrine'
+            - '@validator'
+        calls:
+            - [ setLogger, [ '@logger' ] ]
+        tags:
+            - { name: 'console.command', command: 'thruway:router:start' }
+    
+    thruway.command.worker:
+        class: Vankosoft\ThruwayBundle\Command\ThruwayWorkerCommand
+        arguments:
+            - '@service_container'
+            - '@doctrine'
+            - '@validator'
+            - '@wamp_kernel'
+            - '@vs_thruway.thruway.client.react_connector'
+        calls:
+            - [ setLogger, [ '@logger' ] ]
+        tags:
+            - { name: 'console.command', command: 'thruway:worker:start' }
