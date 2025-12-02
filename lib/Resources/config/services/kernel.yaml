@@ -51,8 +51,8 @@ services:
     
     vs_thruway.thruway.resource.mapper:
         class: Vankosoft\ThruwayBundle\ResourceMapper
-        arguments:
-            - '@annotations.reader'
+        #arguments:
+        #    - '@annotations.reader'
     
     get_set_stdClass_normalizer:
         class: Vankosoft\ThruwayBundle\Serialization\StdClassNormalizer

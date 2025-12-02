@@ -17,7 +17,7 @@ class ResourceMapper
     const SECURITY_ANNOTATION_CLASS = 'Sensio\\Bundle\\FrameworkExtraBundle\\Configuration\\Security';
 
     /**
-     * @var Reader
+     * @var Reader | null
      */
     private $reader;
 
@@ -40,7 +40,7 @@ class ResourceMapper
     /**
      * @param Reader $reader
      */
-    public function __construct(Reader $reader)
+    public function __construct( ?Reader $reader )
     {
         $this->reader = $reader;
     }
@@ -50,9 +50,13 @@ class ResourceMapper
      * @param $class
      * @param $method
      */
-    public function map($serviceId, $class, $method)
+    public function map( $serviceId, $class, $method )
     {
-        $class  = new \ReflectionClass($class);
+        if ( ! $this->reader ) {
+            return;
+        }
+        
+        $class  = new \ReflectionClass( $class );
         $method = $class->getMethod($method);
 
         $annotations        = [];
@@ -95,6 +99,10 @@ class ResourceMapper
      */
     public function setWorkerAnnotation($class)
     {
+        if ( ! $this->reader ) {
+            return;
+        }
+        
         $class      = new \ReflectionClass($class);
         $annotation = $this->reader->getClassAnnotation($class, self::WORKER_ANNOTATION_CLASS);
 
