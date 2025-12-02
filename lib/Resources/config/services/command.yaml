@@ -19,6 +19,9 @@ services:
             - '@service_container'
             - '@doctrine'
             - '@validator'
+            - '%vs_thruway.trusted_url%'
+            - '%vs_thruway.workers.symfony_commands%'
+            - '%vs_thruway.workers.shell_commands%'
         calls:
             - [ setLogger, [ '@logger' ] ]
         tags:

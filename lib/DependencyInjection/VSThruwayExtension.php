@@ -30,9 +30,16 @@ class VSThruwayExtension extends Extension
         $this->validate( $config );
 
         $container->setParameter( 'vs_thruway.realm', $config['realm'] );
+        $container->setParameter( 'vs_thruway.url', $config['url'] );
         $container->setParameter( 'vs_thruway.trusted_url', $config['trusted_url'] );
         $container->setParameter( 'vs_thruway.router_ip', $config['router']['ip'] );
         $container->setParameter( 'vs_thruway.router_port', $config['router']['port'] );
+        $container->setParameter( 'vs_thruway.router_trusted_port', $config['router']['trusted_port'] );
+        
+        $container->setParameter( 'vs_thruway.user_provider', $config['user_provider'] );
+        $container->setParameter( 'vs_thruway.enable_logging', $config['enable_logging'] );
+        $container->setParameter( 'vs_thruway.workers.symfony_commands', $config['workers']['symfony_commands'] );
+        $container->setParameter( 'vs_thruway.workers.shell_commands', $config['workers']['shell_commands'] );
 
         $this->configureOptions( $config, $container );
 

@@ -6,6 +6,9 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Doctrine\Persistence\ManagerRegistry;
+use Psr\Container\ContainerInterface;
 use Psr\Log\NullLogger;
 use Thruway\ClientSession;
 use Thruway\Connection;
@@ -33,11 +36,6 @@ class ThruwayProcessCommand extends ContainerAwareCommand
     private $processManager;
 
     /**
-     * @var
-     */
-    private $config;
-
-    /**
      * @var InputInterface
      */
     private $input;
@@ -56,7 +54,31 @@ class ThruwayProcessCommand extends ContainerAwareCommand
      * @var \Psr\Log\LoggerInterface $logger
      */
     private $logger;
+    
+    /** @var string */
+    private $trustedUrl;
+    
+    /** @var */
+    private $workersSymfonyCommands;
+    
+    /** @var */
+    private $workersShellCommands;
 
+    public function __construct(
+        ContainerInterface $container,
+        ManagerRegistry $doctrine,
+        ValidatorInterface $validator,
+        string $trustedUrl,
+        $workersSymfonyCommands,
+        $workersShellCommands
+    ) {
+        parent::__construct( $container, $doctrine, $validator );
+        
+        $this->trustedUrl   = $trustedUrl;
+        $this->workersSymfonyCommands   = $workersSymfonyCommands;
+        $this->workersShellCommands     = $workersShellCommands;
+    }
+            
     /**
      * Called by the Service Container.
      */
@@ -82,7 +104,7 @@ class ThruwayProcessCommand extends ContainerAwareCommand
      */
     protected function execute( InputInterface $input, OutputInterface $output ): int
     {
-        if ( $this->getParameter( 'vs_thruway' )['enable_logging'] ) {
+        if ( $this->getParameter( 'vs_thruway.enable_logging' ) ) {
             \Thruway\Logging\Logger::set( $this->logger );
         } else {
             \Thruway\Logging\Logger::set( new \Psr\Log\NullLogger() );
@@ -90,7 +112,6 @@ class ThruwayProcessCommand extends ContainerAwareCommand
 
         $this->input  = $input;
         $this->output = $output;
-        $this->config = $this->getParameter( 'vs_thruway' );
 
         switch ( $input->getArgument( 'action' ) ) {
             case 'start':
@@ -143,7 +164,7 @@ class ThruwayProcessCommand extends ContainerAwareCommand
             $loop = $this->get( 'vs_thruway.thruway.loop' );
 
             $this->processManager = new ProcessManager( "process_manager", $loop, $this );
-            $this->processManager->addTransportProvider( new PawlTransportProvider( $this->config['trusted_url'] ) );
+            $this->processManager->addTransportProvider( new PawlTransportProvider( $this->trustedUrl ) );
 
             $this->output->writeln( 'Starting Thruway Workers...' );
             $this->output->writeln( "The environment is: {$env}" );
@@ -180,7 +201,7 @@ class ThruwayProcessCommand extends ContainerAwareCommand
         $result = null;
         $realm  = 'process_manager';
 
-        $connection = new Connection( ['realm' => $realm, 'url' => $this->config['trusted_url'], "max_retries" => 0] );
+        $connection = new Connection( ['realm' => $realm, 'url' => $this->trustedUrl, "max_retries" => 0] );
         $connection->on( 'open', function ( ClientSession $session ) use ( $uri, $args, $connection, &$result ) {
             $session->call( $uri, $args )->then(
                 function ( $res ) use ( $connection, &$result) {
@@ -290,7 +311,7 @@ class ThruwayProcessCommand extends ContainerAwareCommand
             'router' => 'thruway:router:start'
         ];
 
-        $onetimeWorkers = array_merge( $defaultWorkers, $this->config['workers']['symfony_commands'] );
+        $onetimeWorkers = array_merge( $defaultWorkers, $this->workersSymfonyCommands );
 
         foreach ( $onetimeWorkers as $workerName => $command ) {
 
@@ -313,7 +334,7 @@ class ThruwayProcessCommand extends ContainerAwareCommand
      */
     protected function addShellCmdWorkers(): void
     {
-        $shellWorkers = $this->config['workers']['shell_commands'];
+        $shellWorkers = $this->workersShellCommands;
 
         foreach ( $shellWorkers as $workerName => $command ) {
 

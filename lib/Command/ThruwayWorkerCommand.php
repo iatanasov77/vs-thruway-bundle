@@ -70,7 +70,7 @@ class ThruwayWorkerCommand extends ContainerAwareCommand
      */
     protected function execute( InputInterface $input, OutputInterface $output ): int
     {
-        if ( $this->getParameter( 'vs_thruway' )['enable_logging'] ) {
+        if ( $this->getParameter( 'vs_thruway.enable_logging' ) ) {
             \Thruway\Logging\Logger::set( $this->logger );
         } else {
             \Thruway\Logging\Logger::set(new \Psr\Log\NullLogger());
@@ -100,15 +100,14 @@ class ThruwayWorkerCommand extends ContainerAwareCommand
     
     protected function getClient( ?WorkerAnnotation $workerAnnotation = null ): ClientInterface
     {
-        $config = $this->getParameter( 'vs_thruway' );
         $loop   = $this->get( 'vs_thruway.thruway.loop' );
         
         if ( $workerAnnotation ) {
-            $realm = $workerAnnotation->getRealm() ?: $config['realm'];
-            $url   = $workerAnnotation->getUrl() ?: $config['url'];
+            $realm = $workerAnnotation->getRealm() ?: $this->getParameter( 'vs_thruway.realm' );
+            $url   = $workerAnnotation->getUrl() ?: $this->getParameter( 'vs_thruway.url' );
         } else {
-            $realm = $config['realm'];
-            $url   = $config['url'];
+            $realm = $this->getParameter( 'vs_thruway.realm' );
+            $url   = $this->getParameter( 'vs_thruway.url' );
         }
         
         $transport = new PawlTransportProvider( $url );
