@@ -40,6 +40,8 @@ class VSThruwayExtension extends Extension
         $container->setParameter( 'vs_thruway.enable_logging', $config['enable_logging'] );
         $container->setParameter( 'vs_thruway.workers.symfony_commands', $config['workers']['symfony_commands'] );
         $container->setParameter( 'vs_thruway.workers.shell_commands', $config['workers']['shell_commands'] );
+        $container->setParameter( 'vs_thruway.locations.files', $config['locations']['files'] );
+        $container->setParameter( 'vs_thruway.locations.bundles', $config['locations']['bundles'] );
 
         $this->configureOptions( $config, $container );
 
