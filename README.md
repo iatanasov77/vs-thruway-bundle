@@ -1,5 +1,4 @@
-ThruwayBundle
-===========
+#VankoSoft Symfony Application Extension - WebSockets (WAMP2) integration
 
 This a Symfony Bundle for [Thruway](https://github.com/voryx/Thruway), which is a php implementation of WAMP (Web Application Messaging Protocol).
 

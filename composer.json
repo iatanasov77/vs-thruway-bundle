@@ -1,7 +1,7 @@
 {
     "name": "vankosoft/thruway-bundle",
     "type": "symfony-bundle",
-    "description": "WebSockets (WAMP2) integration for Symfony",
+    "description": "VankoSoft Symfony Application Extension - WebSockets (WAMP2) integration",
     "keywords": [
         "WebSockets",
         "WAMP",
@@ -39,8 +39,7 @@
         "voryx/thruway": "~0.6",
         "symfony/serializer": "^6.4",
         "react/child-process": "~0.6",
-        "symfony/event-dispatcher": "^6.4",
-        "thruway/pawl-transport": "^0.5.1"
+        "symfony/event-dispatcher": "^6.4"
     },
     "suggest": {
         "vankosoft/application": "This a Required Core Library.",

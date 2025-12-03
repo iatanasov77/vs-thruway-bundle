@@ -1,0 +1,11 @@
+imports:
+    - { resource: services/kernel.yaml }
+    - { resource: services/authentication.yaml }
+    - { resource: services/thruway_client.yaml }
+    - { resource: services/command.yaml }
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: true

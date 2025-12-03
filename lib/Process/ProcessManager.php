@@ -48,9 +48,8 @@ class ProcessManager extends Client
 
 
         //Congestion Manager Client.  This needs to be a separate client because it needs to listen on the main realm and not `process_manager`.
-        $config            = $this->container->getParameter( 'vs_thruway' );
         $congestionManager = new Client($config['realm'], $session->getLoop());
-        $congestionManager->addTransportProvider(new PawlTransportProvider($config['trusted_url']));
+        $congestionManager->addTransportProvider( new PawlTransportProvider( $this->container->getParameter( 'vs_thruway.trusted_url' ) ) );
 
         $congestionManager->on('open', function (ClientSession $session) {
             $session->subscribe('thruway.metaevent.procedure.congestion', [$this, 'onCongestion']);

@@ -31,9 +31,8 @@ class AnnotationConfigurationPass implements CompilerPassInterface
      */
     public function process( ContainerBuilder $container ): void
     {
-        $config      = $container->getParameter( 'vs_thruway' );
         $bundleFiles = $this->getBundleFiles( $container );
-        $files       = $config['locations']['files'] + $bundleFiles;
+        $files       = $container->getParameter( 'vs_thruway.locations.files' ) + $bundleFiles;
 
         foreach ( $files as $class ) {
             $class      = new \ReflectionClass( $class );
@@ -61,8 +60,7 @@ class AnnotationConfigurationPass implements CompilerPassInterface
      */
     private function getBundleFiles( ContainerBuilder $container ): array
     {
-        $config      = $container->getParameter( 'vs_thruway' );
-        $scanBundles = $config['locations']['bundles'];
+        $scanBundles = $container->getParameter( 'vs_thruway.locations.bundles' );;
         $bundles     = $this->bundles;
         $files       = [];
 

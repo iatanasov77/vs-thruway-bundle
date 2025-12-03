@@ -28,7 +28,7 @@ class UserDB implements WampCraUserDbInterface
     public function get($authid)
     {
         try {
-            $userProvider = $this->container->getParameter( 'vs_thruway' )['user_provider'];
+            $userProvider = $this->container->getParameter( 'vs_thruway.user_provider' );
 
             if (null === $userProvider) {
                 throw new \Exception( 'vs_thruway.user_provider must be set.' );

@@ -24,13 +24,24 @@ class VSThruwayExtension extends Extension
         $configuration = new Configuration();
         $config        = $this->processConfiguration( $configuration, $configs );
 
-        $loader = new Loader\XmlFileLoader( $container, new FileLocator( __DIR__.'/../Resources/config' ) );
-        
-        $loader->load( 'services.xml' );
+        $loader = new Loader\YamlFileLoader( $container, new FileLocator( __DIR__.'/../Resources/config' ) );
+        $loader->load( 'services.yaml' );
 
         $this->validate( $config );
 
-        $container->setParameter( 'vs_thruway', $config );
+        $container->setParameter( 'vs_thruway.realm', $config['realm'] );
+        $container->setParameter( 'vs_thruway.url', $config['url'] );
+        $container->setParameter( 'vs_thruway.trusted_url', $config['trusted_url'] );
+        $container->setParameter( 'vs_thruway.router_ip', $config['router']['ip'] );
+        $container->setParameter( 'vs_thruway.router_port', $config['router']['port'] );
+        $container->setParameter( 'vs_thruway.router_trusted_port', $config['router']['trusted_port'] );
+        
+        $container->setParameter( 'vs_thruway.user_provider', $config['user_provider'] );
+        $container->setParameter( 'vs_thruway.enable_logging', $config['enable_logging'] );
+        $container->setParameter( 'vs_thruway.workers.symfony_commands', $config['workers']['symfony_commands'] );
+        $container->setParameter( 'vs_thruway.workers.shell_commands', $config['workers']['shell_commands'] );
+        $container->setParameter( 'vs_thruway.locations.files', $config['locations']['files'] );
+        $container->setParameter( 'vs_thruway.locations.bundles', $config['locations']['bundles'] );
 
         $this->configureOptions( $config, $container );
 
@@ -49,18 +60,6 @@ class VSThruwayExtension extends Extension
         if ( isset( $config['resources'] ) && ! is_array( $config['resources'] ) ) {
             throw new \InvalidArgumentException(
               'The "resources" option must be an array'
-            );
-        }
-
-        if ( isset( $config['uri'] ) ) {
-            throw new \InvalidArgumentException(
-              'The "uri" config option has been deprecated, please use "url" instead'
-            );
-        }
-
-        if ( isset( $config['trusted_uri'] ) ) {
-            throw new \InvalidArgumentException(
-              'The "trusted_uri" config option has been deprecated, please use "trusted_url" instead'
             );
         }
 

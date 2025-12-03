@@ -1,3 +1,14 @@
+1.1.0	|	Release date: **03.12.2025**
+============================================
+* Bug-Fixes and Improvements:
+  - Update Package Title and Description.
+  - Refactoring Services Configs in Yaml Files.
+  - Remove Thruway PawlTransport Dependency.
+  - Fix Classes that Used vs_thruway parameter.
+  - Fix ResourceMapper Argument.
+  - Remove Deprecated Configuration Options.
+
+
 1.0.1	|	Release date: **10.10.2024**
 ============================================
 * New Features:
