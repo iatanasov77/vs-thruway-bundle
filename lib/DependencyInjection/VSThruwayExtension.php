@@ -63,18 +63,6 @@ class VSThruwayExtension extends Extension
             );
         }
 
-        if ( isset( $config['uri'] ) ) {
-            throw new \InvalidArgumentException(
-              'The "uri" config option has been deprecated, please use "url" instead'
-            );
-        }
-
-        if ( isset( $config['trusted_uri'] ) ) {
-            throw new \InvalidArgumentException(
-              'The "trusted_uri" config option has been deprecated, please use "trusted_url" instead'
-            );
-        }
-
         if ( ! isset( $config['realm'] ) ) {
             throw new \InvalidArgumentException(
               'The "realm" option must be set within vs_thruway'
